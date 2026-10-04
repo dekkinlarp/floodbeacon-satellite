@@ -144,6 +144,17 @@ See the [measured model results](docs/damage-identification-research.md) and
 
 ## Earlier historical flood-analysis POC
 
+The separate responder **Response** tab now demonstrates historical access
+planning with November 11–19, 2021 Coldwater gauge observations, hypothetical
+closure thresholds and a schematic network. Later historical observations
+provide a two-day hindsight outlook; this is not a trained forecast or a record
+of actual closures. See [data, decision rules and future forecast inputs](docs/access-replay.md).
+Prepare with `uv run --locked floodbeacon prepare-access-replay` and publish with
+`uv run --locked --env-file .env floodbeacon publish-access-replay`.
+The read-only API is `/cases/bc-2021-access-demo/access-replay`; its dedicated
+case preserves existing BC analysis. The frontend also packages the same small
+JSON export so this demo works independently of the API.
+
 The existing batch pipeline publishes complete PostgreSQL runs; FastAPI and an
 HTML map read those same artifacts. Its configured cases are the July 2021 Ahr
 Valley flood in Germany (CEMS EMSR517 AOI15) and the November 2021

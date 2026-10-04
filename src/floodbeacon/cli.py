@@ -14,6 +14,9 @@ def main():
     sub = parser.add_subparsers(dest="command", required=True)
     sub.add_parser("init-db")
     sub.add_parser("publish-imagery", help="Publish the bundled bridge imagery catalog to PostgreSQL")
+    access = sub.add_parser("prepare-access-replay", help="Export the bundled historical decision replay")
+    access.add_argument("--output", type=Path, default=Path(__file__).with_name("static") / "access-replay/replay.json")
+    sub.add_parser("publish-access-replay", help="Publish the prepared replay atomically to PostgreSQL")
     train = sub.add_parser("train")
     train.add_argument("--data-dir", type=Path, default=Path("data"))
     train.add_argument("--chips-per-event", type=int, default=3)
@@ -30,6 +33,12 @@ def main():
     elif args.command == "publish-imagery":
         from floodbeacon.imagery import publish_catalog
         print(json.dumps(publish_catalog(), indent=2))
+    elif args.command == "prepare-access-replay":
+        from floodbeacon.access_publication import export_replay
+        print(export_replay(args.output).resolve())
+    elif args.command == "publish-access-replay":
+        from floodbeacon.access_publication import publish_replay
+        print(json.dumps(publish_replay(), indent=2))
     elif args.command == "train":
         from floodbeacon.ml import train_model
         path, details = train_model(args.data_dir, args.chips_per_event)

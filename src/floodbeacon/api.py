@@ -52,6 +52,23 @@ class ObservationSeries(BaseModel):
     observations: list[dict[str, Any]]
 
 
+class AccessReplay(BaseModel):
+    """Precomputed historical hindsight with explicitly hypothetical access rules."""
+
+    schema_version: Literal[1]
+    case_id: str
+    title: str
+    mode: Literal["historical_replay"]
+    lookahead_days: int
+    station: dict[str, Any]
+    network: dict[str, Any]
+    sources: list[dict[str, Any]]
+    assumptions: list[str]
+    frames: list[dict[str, Any]]
+    run_id: str
+    generated_at: datetime
+
+
 Position = tuple[float, float]
 Bounds = tuple[float, float, float, float]
 
@@ -295,6 +312,15 @@ def imagery(case_id: str, run_id: RunQuery = None):
     result = db.get_imagery(case_id, run_id)
     if result is None:
         raise HTTPException(404, "Case or imagery run not found")
+    return result
+
+
+@app.get("/cases/{case_id}/access-replay", response_model=AccessReplay)
+def access_replay(case_id: str, run_id: RunQuery = None):
+    """Return one immutable completed replay; no decision processing in GET."""
+    result = db.get_access_replay(case_id, run_id)
+    if result is None:
+        raise HTTPException(404, "Case or access replay run not found")
     return result
 
 

@@ -1,0 +1,1445 @@
+{
+  "schema_version": 1,
+  "case_id": "bc-2021-access-demo",
+  "title": "Merritt access planning — November 2021 historical replay",
+  "mode": "historical_replay",
+  "station": {
+    "id": "08LG010",
+    "name": "COLDWATER RIVER AT MERRITT",
+    "coordinate": [
+      -120.8030014038086,
+      50.10979843139648
+    ],
+    "stage_datum_note": "Gauge stage in metres above the station reference datum, not elevation above sea level or water depth over a road. The station datum was not independently resolved for this demo."
+  },
+  "lookahead_days": 2,
+  "network": {
+    "nodes": [
+      {
+        "id": "base",
+        "name": "Demo staging point",
+        "coordinate": [
+          -120.7815,
+          50.117
+        ],
+        "kind": "base"
+      },
+      {
+        "id": "north",
+        "name": "Northern planning junction",
+        "coordinate": [
+          -120.795,
+          50.112
+        ],
+        "kind": "junction"
+      },
+      {
+        "id": "south",
+        "name": "Southern planning junction",
+        "coordinate": [
+          -120.795,
+          50.099
+        ],
+        "kind": "junction"
+      },
+      {
+        "id": "area-a",
+        "name": "Planning area A",
+        "coordinate": [
+          -120.814,
+          50.104
+        ],
+        "kind": "community"
+      },
+      {
+        "id": "area-b",
+        "name": "Planning area B",
+        "coordinate": [
+          -120.798,
+          50.089
+        ],
+        "kind": "community"
+      },
+      {
+        "id": "area-c",
+        "name": "Planning area C",
+        "coordinate": [
+          -120.768,
+          50.109
+        ],
+        "kind": "community"
+      }
+    ],
+    "edges": [
+      {
+        "id": "base-north",
+        "name": "Northern staging corridor",
+        "from": "base",
+        "to": "north",
+        "coordinates": [
+          [
+            -120.7815,
+            50.117
+          ],
+          [
+            -120.795,
+            50.112
+          ]
+        ],
+        "trigger": null
+      },
+      {
+        "id": "base-south",
+        "name": "Southern staging corridor",
+        "from": "base",
+        "to": "south",
+        "coordinates": [
+          [
+            -120.7815,
+            50.117
+          ],
+          [
+            -120.795,
+            50.099
+          ]
+        ],
+        "trigger": {
+          "metric": "stage_m",
+          "threshold": 2.2,
+          "reason": "Assumed concern threshold for a low approach"
+        }
+      },
+      {
+        "id": "north-a",
+        "name": "Area A northern corridor",
+        "from": "north",
+        "to": "area-a",
+        "coordinates": [
+          [
+            -120.795,
+            50.112
+          ],
+          [
+            -120.814,
+            50.104
+          ]
+        ],
+        "trigger": {
+          "metric": "stage_m",
+          "threshold": 1.6,
+          "reason": "Assumed low-road concern threshold"
+        }
+      },
+      {
+        "id": "south-a",
+        "name": "Area A alternative corridor",
+        "from": "south",
+        "to": "area-a",
+        "coordinates": [
+          [
+            -120.795,
+            50.099
+          ],
+          [
+            -120.814,
+            50.104
+          ]
+        ],
+        "trigger": {
+          "metric": "stage_m",
+          "threshold": 1.65,
+          "reason": "Assumed alternative low-road concern threshold"
+        }
+      },
+      {
+        "id": "north-b",
+        "name": "Area B northern crossing",
+        "from": "north",
+        "to": "area-b",
+        "coordinates": [
+          [
+            -120.795,
+            50.112
+          ],
+          [
+            -120.798,
+            50.089
+          ]
+        ],
+        "trigger": {
+          "metric": "stage_m",
+          "threshold": 2.8,
+          "reason": "Assumed crossing-approach concern threshold"
+        }
+      },
+      {
+        "id": "south-b",
+        "name": "Area B alternative crossing",
+        "from": "south",
+        "to": "area-b",
+        "coordinates": [
+          [
+            -120.795,
+            50.099
+          ],
+          [
+            -120.798,
+            50.089
+          ]
+        ],
+        "trigger": {
+          "metric": "discharge_m3_s",
+          "threshold": 200.0,
+          "reason": "Assumed high-flow concern threshold; not a structural failure model"
+        }
+      },
+      {
+        "id": "base-c",
+        "name": "Area C independent corridor",
+        "from": "base",
+        "to": "area-c",
+        "coordinates": [
+          [
+            -120.7815,
+            50.117
+          ],
+          [
+            -120.768,
+            50.109
+          ]
+        ],
+        "trigger": null
+      },
+      {
+        "id": "north-c",
+        "name": "Area C alternative corridor",
+        "from": "north",
+        "to": "area-c",
+        "coordinates": [
+          [
+            -120.795,
+            50.112
+          ],
+          [
+            -120.768,
+            50.109
+          ]
+        ],
+        "trigger": {
+          "metric": "discharge_m3_s",
+          "threshold": 100.0,
+          "reason": "Assumed flow-sensitive corridor threshold"
+        }
+      }
+    ],
+    "base_node_id": "base",
+    "community_node_ids": [
+      "area-a",
+      "area-b",
+      "area-c"
+    ],
+    "note": "Schematic planning graph: all nodes, straight-line corridor geometry, connectivity and concern thresholds are illustrative author assumptions at Merritt geographic anchors. This is not a surveyed, complete or historical road network. No actual community isolation, road closure or bridge collapse is established. Untriggered corridors mean no modeled trigger, not verified passability."
+  },
+  "sources": [
+    {
+      "source_id": "eccc-hydrometric-daily-mean",
+      "title": "ECCC HYDAT daily mean water level and flow",
+      "source_url": "https://api.weather.gc.ca/collections/hydrometric-daily-mean/items?f=json&STATION_NUMBER=08LG010&datetime=2021-11-11%2F2021-11-19&limit=1000",
+      "documentation_url": "https://eccc-msc.github.io/open-data/msc-geomet/ogc_api_en/",
+      "dataset_id": "hydrometric-daily-mean",
+      "station_id": "08LG010",
+      "item_ids": [
+        "08LG010.2021-11-11",
+        "08LG010.2021-11-12",
+        "08LG010.2021-11-13",
+        "08LG010.2021-11-14",
+        "08LG010.2021-11-15",
+        "08LG010.2021-11-16",
+        "08LG010.2021-11-17",
+        "08LG010.2021-11-18",
+        "08LG010.2021-11-19"
+      ],
+      "version": "Historical archive as retrieved; API provides no immutable dataset release version",
+      "retrieved_at": "2026-10-04T10:47:20.060973Z",
+      "response_timestamp": "2026-10-04T10:47:20.014454Z",
+      "observation_period": {
+        "start": "2021-11-11",
+        "end": "2021-11-19"
+      },
+      "time_resolution": "daily_mean",
+      "date_semantics": "Source daily dates preserved verbatim; no UTC acquisition instant is inferred",
+      "available_at": null,
+      "forecast_issued_at": null,
+      "forecast_valid_at": null,
+      "units": {
+        "stage_m": "m above station datum",
+        "discharge_m3_s": "m³/s"
+      },
+      "crs": "OGC:CRS84 (WGS84 longitude, latitude)",
+      "license": "Environment and Climate Change Canada Data Services End-use Licence, page header version 2.1.1 (August 2026)",
+      "license_url": "https://eccc-msc.github.io/open-data/licence/readme_en/",
+      "attribution": "Data Source: Environment and Climate Change Canada",
+      "raw_file": "data/raw/bc-2021/access-replay-hydrometric-20261004T104720Z-95078cc2ac72.json",
+      "raw_sha256": "95078cc2ac7294e9a52637e769569f675ac2a02d5067935860c2987067575f7f",
+      "processing": "Select November 11–19, sort by source DATE, rename LEVEL/DISCHARGE, preserve exact numeric values, nulls and English quality symbols; no interpolation or rounding"
+    }
+  ],
+  "assumptions": [
+    "Real historical daily observations drive an illustrative access scenario; future historical values are retrospective look-ahead, not forecasts available in 2021.",
+    "Original publication/availability times are unknown, represented as null; no predictive skill or historical no-leakage evaluation is claimed.",
+    "Daily means cannot resolve intraday peaks or exact access-loss times. Calendar-day windows are used without invented hourly precision.",
+    "Nov 15 and Nov 16 discharge values carry ECCC's Estimated flag; missing source flags remain null rather than becoming a verified quality claim.",
+    "Gauge thresholds are hypothetical scenario parameters, not local road depths, calibrated closure thresholds, bridge failure probabilities or evidence of actual destruction.",
+    "Graph geometry, connectivity, destinations and staging point are synthetic. Destination names do not assert settlements, population, responder bases or rescue urgency.",
+    "A triggered edge represents modeled access concern. An untriggered edge does not establish actual passability.",
+    "Thresholds recover as daily values fall in this reversible scenario; actual damaged infrastructure may remain unavailable long after water recedes.",
+    "A live forecast adapter must provide valid times, issue/availability times, gauge units/datum and quality before using the same engine operationally."
+  ],
+  "frames": [
+    {
+      "date": "2021-11-11",
+      "observation": {
+        "date": "2021-11-11",
+        "stage_m": 1.180999994277954,
+        "discharge_m3_s": 3.7200000286102295,
+        "stage_quality": null,
+        "discharge_quality": null,
+        "available_at": null
+      },
+      "outlook": [
+        {
+          "date": "2021-11-12",
+          "stage_m": 1.1970000267028809,
+          "discharge_m3_s": 4.159999847412109,
+          "stage_quality": null,
+          "discharge_quality": null,
+          "available_at": null
+        },
+        {
+          "date": "2021-11-13",
+          "stage_m": 1.4600000381469729,
+          "discharge_m3_s": 12.300000190734863,
+          "stage_quality": null,
+          "discharge_quality": null,
+          "available_at": null
+        }
+      ],
+      "edge_states": [
+        {
+          "edge_id": "base-north",
+          "metric": null,
+          "value": null,
+          "threshold": null,
+          "status": "modeled_available",
+          "reason": "Baseline corridor assumed available in this illustrative network; actual passability is unverified."
+        },
+        {
+          "edge_id": "base-south",
+          "metric": "stage_m",
+          "value": 1.180999994277954,
+          "threshold": 2.2,
+          "status": "modeled_available",
+          "reason": "Daily stage_m 1.181 is below the assumed threshold 2.2; actual passability and reopening are unverified. Assumed concern threshold for a low approach"
+        },
+        {
+          "edge_id": "north-a",
+          "metric": "stage_m",
+          "value": 1.180999994277954,
+          "threshold": 1.6,
+          "status": "modeled_available",
+          "reason": "Daily stage_m 1.181 is below the assumed threshold 1.6; actual passability and reopening are unverified. Assumed low-road concern threshold"
+        },
+        {
+          "edge_id": "south-a",
+          "metric": "stage_m",
+          "value": 1.180999994277954,
+          "threshold": 1.65,
+          "status": "modeled_available",
+          "reason": "Daily stage_m 1.181 is below the assumed threshold 1.65; actual passability and reopening are unverified. Assumed alternative low-road concern threshold"
+        },
+        {
+          "edge_id": "north-b",
+          "metric": "stage_m",
+          "value": 1.180999994277954,
+          "threshold": 2.8,
+          "status": "modeled_available",
+          "reason": "Daily stage_m 1.181 is below the assumed threshold 2.8; actual passability and reopening are unverified. Assumed crossing-approach concern threshold"
+        },
+        {
+          "edge_id": "south-b",
+          "metric": "discharge_m3_s",
+          "value": 3.7200000286102295,
+          "threshold": 200.0,
+          "status": "modeled_available",
+          "reason": "Daily discharge_m3_s 3.72 is below the assumed threshold 200; actual passability and reopening are unverified. Assumed high-flow concern threshold; not a structural failure model"
+        },
+        {
+          "edge_id": "base-c",
+          "metric": null,
+          "value": null,
+          "threshold": null,
+          "status": "modeled_available",
+          "reason": "Baseline corridor assumed available in this illustrative network; actual passability is unverified."
+        },
+        {
+          "edge_id": "north-c",
+          "metric": "discharge_m3_s",
+          "value": 3.7200000286102295,
+          "threshold": 100.0,
+          "status": "modeled_available",
+          "reason": "Daily discharge_m3_s 3.72 is below the assumed threshold 100; actual passability and reopening are unverified. Assumed flow-sensitive corridor threshold"
+        }
+      ],
+      "communities": [
+        {
+          "node_id": "area-a",
+          "name": "Planning area A",
+          "status": "reachable",
+          "first_loss_date": null,
+          "days_until_loss": null,
+          "action": "monitor",
+          "reason": "A route to the selected base remains in all available daily scenario samples over the next two calendar days. Actual passability, conditions between samples and reopening are unverified.",
+          "affected_edge_ids": []
+        },
+        {
+          "node_id": "area-b",
+          "name": "Planning area B",
+          "status": "reachable",
+          "first_loss_date": null,
+          "days_until_loss": null,
+          "action": "monitor",
+          "reason": "A route to the selected base remains in all available daily scenario samples over the next two calendar days. Actual passability, conditions between samples and reopening are unverified.",
+          "affected_edge_ids": []
+        },
+        {
+          "node_id": "area-c",
+          "name": "Planning area C",
+          "status": "reachable",
+          "first_loss_date": null,
+          "days_until_loss": null,
+          "action": "monitor",
+          "reason": "A route to the selected base remains in all available daily scenario samples over the next two calendar days. Actual passability, conditions between samples and reopening are unverified.",
+          "affected_edge_ids": []
+        }
+      ]
+    },
+    {
+      "date": "2021-11-12",
+      "observation": {
+        "date": "2021-11-12",
+        "stage_m": 1.1970000267028809,
+        "discharge_m3_s": 4.159999847412109,
+        "stage_quality": null,
+        "discharge_quality": null,
+        "available_at": null
+      },
+      "outlook": [
+        {
+          "date": "2021-11-13",
+          "stage_m": 1.4600000381469729,
+          "discharge_m3_s": 12.300000190734863,
+          "stage_quality": null,
+          "discharge_quality": null,
+          "available_at": null
+        },
+        {
+          "date": "2021-11-14",
+          "stage_m": 1.680999994277954,
+          "discharge_m3_s": 32.900001525878906,
+          "stage_quality": null,
+          "discharge_quality": null,
+          "available_at": null
+        }
+      ],
+      "edge_states": [
+        {
+          "edge_id": "base-north",
+          "metric": null,
+          "value": null,
+          "threshold": null,
+          "status": "modeled_available",
+          "reason": "Baseline corridor assumed available in this illustrative network; actual passability is unverified."
+        },
+        {
+          "edge_id": "base-south",
+          "metric": "stage_m",
+          "value": 1.1970000267028809,
+          "threshold": 2.2,
+          "status": "modeled_available",
+          "reason": "Daily stage_m 1.197 is below the assumed threshold 2.2; actual passability and reopening are unverified. Assumed concern threshold for a low approach"
+        },
+        {
+          "edge_id": "north-a",
+          "metric": "stage_m",
+          "value": 1.1970000267028809,
+          "threshold": 1.6,
+          "status": "modeled_available",
+          "reason": "Daily stage_m 1.197 is below the assumed threshold 1.6; actual passability and reopening are unverified. Assumed low-road concern threshold"
+        },
+        {
+          "edge_id": "south-a",
+          "metric": "stage_m",
+          "value": 1.1970000267028809,
+          "threshold": 1.65,
+          "status": "modeled_available",
+          "reason": "Daily stage_m 1.197 is below the assumed threshold 1.65; actual passability and reopening are unverified. Assumed alternative low-road concern threshold"
+        },
+        {
+          "edge_id": "north-b",
+          "metric": "stage_m",
+          "value": 1.1970000267028809,
+          "threshold": 2.8,
+          "status": "modeled_available",
+          "reason": "Daily stage_m 1.197 is below the assumed threshold 2.8; actual passability and reopening are unverified. Assumed crossing-approach concern threshold"
+        },
+        {
+          "edge_id": "south-b",
+          "metric": "discharge_m3_s",
+          "value": 4.159999847412109,
+          "threshold": 200.0,
+          "status": "modeled_available",
+          "reason": "Daily discharge_m3_s 4.16 is below the assumed threshold 200; actual passability and reopening are unverified. Assumed high-flow concern threshold; not a structural failure model"
+        },
+        {
+          "edge_id": "base-c",
+          "metric": null,
+          "value": null,
+          "threshold": null,
+          "status": "modeled_available",
+          "reason": "Baseline corridor assumed available in this illustrative network; actual passability is unverified."
+        },
+        {
+          "edge_id": "north-c",
+          "metric": "discharge_m3_s",
+          "value": 4.159999847412109,
+          "threshold": 100.0,
+          "status": "modeled_available",
+          "reason": "Daily discharge_m3_s 4.16 is below the assumed threshold 100; actual passability and reopening are unverified. Assumed flow-sensitive corridor threshold"
+        }
+      ],
+      "communities": [
+        {
+          "node_id": "area-a",
+          "name": "Planning area A",
+          "status": "reachable",
+          "first_loss_date": "2021-11-14",
+          "days_until_loss": 2,
+          "action": "consider_earlier_visit",
+          "reason": "A modeled route exists today, but none remains on the 2021-11-14 daily sample under the assumed thresholds. Consider an earlier visit or pre-positioning; this outlook uses later historical observations, not a forecast.",
+          "affected_edge_ids": [
+            "north-a",
+            "south-a"
+          ]
+        },
+        {
+          "node_id": "area-b",
+          "name": "Planning area B",
+          "status": "reachable",
+          "first_loss_date": null,
+          "days_until_loss": null,
+          "action": "monitor",
+          "reason": "A route to the selected base remains in all available daily scenario samples over the next two calendar days. Actual passability, conditions between samples and reopening are unverified.",
+          "affected_edge_ids": []
+        },
+        {
+          "node_id": "area-c",
+          "name": "Planning area C",
+          "status": "reachable",
+          "first_loss_date": null,
+          "days_until_loss": null,
+          "action": "monitor",
+          "reason": "A route to the selected base remains in all available daily scenario samples over the next two calendar days. Actual passability, conditions between samples and reopening are unverified.",
+          "affected_edge_ids": []
+        }
+      ]
+    },
+    {
+      "date": "2021-11-13",
+      "observation": {
+        "date": "2021-11-13",
+        "stage_m": 1.4600000381469729,
+        "discharge_m3_s": 12.300000190734863,
+        "stage_quality": null,
+        "discharge_quality": null,
+        "available_at": null
+      },
+      "outlook": [
+        {
+          "date": "2021-11-14",
+          "stage_m": 1.680999994277954,
+          "discharge_m3_s": 32.900001525878906,
+          "stage_quality": null,
+          "discharge_quality": null,
+          "available_at": null
+        },
+        {
+          "date": "2021-11-15",
+          "stage_m": 3.181999921798706,
+          "discharge_m3_s": 239.0,
+          "stage_quality": null,
+          "discharge_quality": "Estimated",
+          "available_at": null
+        }
+      ],
+      "edge_states": [
+        {
+          "edge_id": "base-north",
+          "metric": null,
+          "value": null,
+          "threshold": null,
+          "status": "modeled_available",
+          "reason": "Baseline corridor assumed available in this illustrative network; actual passability is unverified."
+        },
+        {
+          "edge_id": "base-south",
+          "metric": "stage_m",
+          "value": 1.4600000381469729,
+          "threshold": 2.2,
+          "status": "modeled_available",
+          "reason": "Daily stage_m 1.46 is below the assumed threshold 2.2; actual passability and reopening are unverified. Assumed concern threshold for a low approach"
+        },
+        {
+          "edge_id": "north-a",
+          "metric": "stage_m",
+          "value": 1.4600000381469729,
+          "threshold": 1.6,
+          "status": "modeled_available",
+          "reason": "Daily stage_m 1.46 is below the assumed threshold 1.6; actual passability and reopening are unverified. Assumed low-road concern threshold"
+        },
+        {
+          "edge_id": "south-a",
+          "metric": "stage_m",
+          "value": 1.4600000381469729,
+          "threshold": 1.65,
+          "status": "modeled_available",
+          "reason": "Daily stage_m 1.46 is below the assumed threshold 1.65; actual passability and reopening are unverified. Assumed alternative low-road concern threshold"
+        },
+        {
+          "edge_id": "north-b",
+          "metric": "stage_m",
+          "value": 1.4600000381469729,
+          "threshold": 2.8,
+          "status": "modeled_available",
+          "reason": "Daily stage_m 1.46 is below the assumed threshold 2.8; actual passability and reopening are unverified. Assumed crossing-approach concern threshold"
+        },
+        {
+          "edge_id": "south-b",
+          "metric": "discharge_m3_s",
+          "value": 12.300000190734863,
+          "threshold": 200.0,
+          "status": "modeled_available",
+          "reason": "Daily discharge_m3_s 12.3 is below the assumed threshold 200; actual passability and reopening are unverified. Assumed high-flow concern threshold; not a structural failure model"
+        },
+        {
+          "edge_id": "base-c",
+          "metric": null,
+          "value": null,
+          "threshold": null,
+          "status": "modeled_available",
+          "reason": "Baseline corridor assumed available in this illustrative network; actual passability is unverified."
+        },
+        {
+          "edge_id": "north-c",
+          "metric": "discharge_m3_s",
+          "value": 12.300000190734863,
+          "threshold": 100.0,
+          "status": "modeled_available",
+          "reason": "Daily discharge_m3_s 12.3 is below the assumed threshold 100; actual passability and reopening are unverified. Assumed flow-sensitive corridor threshold"
+        }
+      ],
+      "communities": [
+        {
+          "node_id": "area-a",
+          "name": "Planning area A",
+          "status": "reachable",
+          "first_loss_date": "2021-11-14",
+          "days_until_loss": 1,
+          "action": "consider_earlier_visit",
+          "reason": "A modeled route exists today, but none remains on the 2021-11-14 daily sample under the assumed thresholds. Consider an earlier visit or pre-positioning; this outlook uses later historical observations, not a forecast.",
+          "affected_edge_ids": [
+            "north-a",
+            "south-a"
+          ]
+        },
+        {
+          "node_id": "area-b",
+          "name": "Planning area B",
+          "status": "reachable",
+          "first_loss_date": "2021-11-15",
+          "days_until_loss": 2,
+          "action": "consider_earlier_visit",
+          "reason": "A modeled route exists today, but none remains on the 2021-11-15 daily sample under the assumed thresholds. Consider an earlier visit or pre-positioning; this outlook uses later historical observations, not a forecast.",
+          "affected_edge_ids": [
+            "north-b",
+            "south-b"
+          ]
+        },
+        {
+          "node_id": "area-c",
+          "name": "Planning area C",
+          "status": "reachable",
+          "first_loss_date": null,
+          "days_until_loss": null,
+          "action": "monitor",
+          "reason": "A route to the selected base remains in all available daily scenario samples over the next two calendar days. Actual passability, conditions between samples and reopening are unverified.",
+          "affected_edge_ids": []
+        }
+      ]
+    },
+    {
+      "date": "2021-11-14",
+      "observation": {
+        "date": "2021-11-14",
+        "stage_m": 1.680999994277954,
+        "discharge_m3_s": 32.900001525878906,
+        "stage_quality": null,
+        "discharge_quality": null,
+        "available_at": null
+      },
+      "outlook": [
+        {
+          "date": "2021-11-15",
+          "stage_m": 3.181999921798706,
+          "discharge_m3_s": 239.0,
+          "stage_quality": null,
+          "discharge_quality": "Estimated",
+          "available_at": null
+        },
+        {
+          "date": "2021-11-16",
+          "stage_m": 2.2909998893737797,
+          "discharge_m3_s": 106.0,
+          "stage_quality": null,
+          "discharge_quality": "Estimated",
+          "available_at": null
+        }
+      ],
+      "edge_states": [
+        {
+          "edge_id": "base-north",
+          "metric": null,
+          "value": null,
+          "threshold": null,
+          "status": "modeled_available",
+          "reason": "Baseline corridor assumed available in this illustrative network; actual passability is unverified."
+        },
+        {
+          "edge_id": "base-south",
+          "metric": "stage_m",
+          "value": 1.680999994277954,
+          "threshold": 2.2,
+          "status": "modeled_available",
+          "reason": "Daily stage_m 1.681 is below the assumed threshold 2.2; actual passability and reopening are unverified. Assumed concern threshold for a low approach"
+        },
+        {
+          "edge_id": "north-a",
+          "metric": "stage_m",
+          "value": 1.680999994277954,
+          "threshold": 1.6,
+          "status": "scenario_unavailable",
+          "reason": "Daily stage_m 1.681 meets the assumed threshold 1.6. Assumed low-road concern threshold"
+        },
+        {
+          "edge_id": "south-a",
+          "metric": "stage_m",
+          "value": 1.680999994277954,
+          "threshold": 1.65,
+          "status": "scenario_unavailable",
+          "reason": "Daily stage_m 1.681 meets the assumed threshold 1.65. Assumed alternative low-road concern threshold"
+        },
+        {
+          "edge_id": "north-b",
+          "metric": "stage_m",
+          "value": 1.680999994277954,
+          "threshold": 2.8,
+          "status": "modeled_available",
+          "reason": "Daily stage_m 1.681 is below the assumed threshold 2.8; actual passability and reopening are unverified. Assumed crossing-approach concern threshold"
+        },
+        {
+          "edge_id": "south-b",
+          "metric": "discharge_m3_s",
+          "value": 32.900001525878906,
+          "threshold": 200.0,
+          "status": "modeled_available",
+          "reason": "Daily discharge_m3_s 32.9 is below the assumed threshold 200; actual passability and reopening are unverified. Assumed high-flow concern threshold; not a structural failure model"
+        },
+        {
+          "edge_id": "base-c",
+          "metric": null,
+          "value": null,
+          "threshold": null,
+          "status": "modeled_available",
+          "reason": "Baseline corridor assumed available in this illustrative network; actual passability is unverified."
+        },
+        {
+          "edge_id": "north-c",
+          "metric": "discharge_m3_s",
+          "value": 32.900001525878906,
+          "threshold": 100.0,
+          "status": "modeled_available",
+          "reason": "Daily discharge_m3_s 32.9 is below the assumed threshold 100; actual passability and reopening are unverified. Assumed flow-sensitive corridor threshold"
+        }
+      ],
+      "communities": [
+        {
+          "node_id": "area-a",
+          "name": "Planning area A",
+          "status": "isolated",
+          "first_loss_date": "2021-11-14",
+          "days_until_loss": 0,
+          "action": "access_lost_in_scenario",
+          "reason": "No route to the selected base remains in the illustrative scenario, even allowing unknown edges. This is not a verified closure or complete-network isolation.",
+          "affected_edge_ids": [
+            "north-a",
+            "south-a"
+          ]
+        },
+        {
+          "node_id": "area-b",
+          "name": "Planning area B",
+          "status": "reachable",
+          "first_loss_date": "2021-11-15",
+          "days_until_loss": 1,
+          "action": "consider_earlier_visit",
+          "reason": "A modeled route exists today, but none remains on the 2021-11-15 daily sample under the assumed thresholds. Consider an earlier visit or pre-positioning; this outlook uses later historical observations, not a forecast.",
+          "affected_edge_ids": [
+            "north-b",
+            "south-b"
+          ]
+        },
+        {
+          "node_id": "area-c",
+          "name": "Planning area C",
+          "status": "reachable",
+          "first_loss_date": null,
+          "days_until_loss": null,
+          "action": "monitor",
+          "reason": "A route to the selected base remains in all available daily scenario samples over the next two calendar days. Actual passability, conditions between samples and reopening are unverified.",
+          "affected_edge_ids": []
+        }
+      ]
+    },
+    {
+      "date": "2021-11-15",
+      "observation": {
+        "date": "2021-11-15",
+        "stage_m": 3.181999921798706,
+        "discharge_m3_s": 239.0,
+        "stage_quality": null,
+        "discharge_quality": "Estimated",
+        "available_at": null
+      },
+      "outlook": [
+        {
+          "date": "2021-11-16",
+          "stage_m": 2.2909998893737797,
+          "discharge_m3_s": 106.0,
+          "stage_quality": null,
+          "discharge_quality": "Estimated",
+          "available_at": null
+        },
+        {
+          "date": "2021-11-17",
+          "stage_m": 1.8140000104904173,
+          "discharge_m3_s": 51.900001525878906,
+          "stage_quality": null,
+          "discharge_quality": null,
+          "available_at": null
+        }
+      ],
+      "edge_states": [
+        {
+          "edge_id": "base-north",
+          "metric": null,
+          "value": null,
+          "threshold": null,
+          "status": "modeled_available",
+          "reason": "Baseline corridor assumed available in this illustrative network; actual passability is unverified."
+        },
+        {
+          "edge_id": "base-south",
+          "metric": "stage_m",
+          "value": 3.181999921798706,
+          "threshold": 2.2,
+          "status": "scenario_unavailable",
+          "reason": "Daily stage_m 3.182 meets the assumed threshold 2.2. Assumed concern threshold for a low approach"
+        },
+        {
+          "edge_id": "north-a",
+          "metric": "stage_m",
+          "value": 3.181999921798706,
+          "threshold": 1.6,
+          "status": "scenario_unavailable",
+          "reason": "Daily stage_m 3.182 meets the assumed threshold 1.6. Assumed low-road concern threshold"
+        },
+        {
+          "edge_id": "south-a",
+          "metric": "stage_m",
+          "value": 3.181999921798706,
+          "threshold": 1.65,
+          "status": "scenario_unavailable",
+          "reason": "Daily stage_m 3.182 meets the assumed threshold 1.65. Assumed alternative low-road concern threshold"
+        },
+        {
+          "edge_id": "north-b",
+          "metric": "stage_m",
+          "value": 3.181999921798706,
+          "threshold": 2.8,
+          "status": "scenario_unavailable",
+          "reason": "Daily stage_m 3.182 meets the assumed threshold 2.8. Assumed crossing-approach concern threshold"
+        },
+        {
+          "edge_id": "south-b",
+          "metric": "discharge_m3_s",
+          "value": 239.0,
+          "threshold": 200.0,
+          "status": "scenario_unavailable",
+          "reason": "Daily discharge_m3_s 239 meets the assumed threshold 200. Assumed high-flow concern threshold; not a structural failure model"
+        },
+        {
+          "edge_id": "base-c",
+          "metric": null,
+          "value": null,
+          "threshold": null,
+          "status": "modeled_available",
+          "reason": "Baseline corridor assumed available in this illustrative network; actual passability is unverified."
+        },
+        {
+          "edge_id": "north-c",
+          "metric": "discharge_m3_s",
+          "value": 239.0,
+          "threshold": 100.0,
+          "status": "scenario_unavailable",
+          "reason": "Daily discharge_m3_s 239 meets the assumed threshold 100. Assumed flow-sensitive corridor threshold"
+        }
+      ],
+      "communities": [
+        {
+          "node_id": "area-a",
+          "name": "Planning area A",
+          "status": "isolated",
+          "first_loss_date": "2021-11-15",
+          "days_until_loss": 0,
+          "action": "access_lost_in_scenario",
+          "reason": "No route to the selected base remains in the illustrative scenario, even allowing unknown edges. This is not a verified closure or complete-network isolation.",
+          "affected_edge_ids": [
+            "north-a",
+            "south-a"
+          ]
+        },
+        {
+          "node_id": "area-b",
+          "name": "Planning area B",
+          "status": "isolated",
+          "first_loss_date": "2021-11-15",
+          "days_until_loss": 0,
+          "action": "access_lost_in_scenario",
+          "reason": "No route to the selected base remains in the illustrative scenario, even allowing unknown edges. This is not a verified closure or complete-network isolation.",
+          "affected_edge_ids": [
+            "north-b",
+            "south-b"
+          ]
+        },
+        {
+          "node_id": "area-c",
+          "name": "Planning area C",
+          "status": "reachable",
+          "first_loss_date": null,
+          "days_until_loss": null,
+          "action": "monitor",
+          "reason": "A route to the selected base remains in all available daily scenario samples over the next two calendar days. Actual passability, conditions between samples and reopening are unverified.",
+          "affected_edge_ids": []
+        }
+      ]
+    },
+    {
+      "date": "2021-11-16",
+      "observation": {
+        "date": "2021-11-16",
+        "stage_m": 2.2909998893737797,
+        "discharge_m3_s": 106.0,
+        "stage_quality": null,
+        "discharge_quality": "Estimated",
+        "available_at": null
+      },
+      "outlook": [
+        {
+          "date": "2021-11-17",
+          "stage_m": 1.8140000104904173,
+          "discharge_m3_s": 51.900001525878906,
+          "stage_quality": null,
+          "discharge_quality": null,
+          "available_at": null
+        },
+        {
+          "date": "2021-11-18",
+          "stage_m": 1.5160000324249268,
+          "discharge_m3_s": 31.700000762939453,
+          "stage_quality": null,
+          "discharge_quality": null,
+          "available_at": null
+        }
+      ],
+      "edge_states": [
+        {
+          "edge_id": "base-north",
+          "metric": null,
+          "value": null,
+          "threshold": null,
+          "status": "modeled_available",
+          "reason": "Baseline corridor assumed available in this illustrative network; actual passability is unverified."
+        },
+        {
+          "edge_id": "base-south",
+          "metric": "stage_m",
+          "value": 2.2909998893737797,
+          "threshold": 2.2,
+          "status": "scenario_unavailable",
+          "reason": "Daily stage_m 2.291 meets the assumed threshold 2.2. Assumed concern threshold for a low approach"
+        },
+        {
+          "edge_id": "north-a",
+          "metric": "stage_m",
+          "value": 2.2909998893737797,
+          "threshold": 1.6,
+          "status": "scenario_unavailable",
+          "reason": "Daily stage_m 2.291 meets the assumed threshold 1.6. Assumed low-road concern threshold"
+        },
+        {
+          "edge_id": "south-a",
+          "metric": "stage_m",
+          "value": 2.2909998893737797,
+          "threshold": 1.65,
+          "status": "scenario_unavailable",
+          "reason": "Daily stage_m 2.291 meets the assumed threshold 1.65. Assumed alternative low-road concern threshold"
+        },
+        {
+          "edge_id": "north-b",
+          "metric": "stage_m",
+          "value": 2.2909998893737797,
+          "threshold": 2.8,
+          "status": "modeled_available",
+          "reason": "Daily stage_m 2.291 is below the assumed threshold 2.8; actual passability and reopening are unverified. Assumed crossing-approach concern threshold"
+        },
+        {
+          "edge_id": "south-b",
+          "metric": "discharge_m3_s",
+          "value": 106.0,
+          "threshold": 200.0,
+          "status": "modeled_available",
+          "reason": "Daily discharge_m3_s 106 is below the assumed threshold 200; actual passability and reopening are unverified. Assumed high-flow concern threshold; not a structural failure model"
+        },
+        {
+          "edge_id": "base-c",
+          "metric": null,
+          "value": null,
+          "threshold": null,
+          "status": "modeled_available",
+          "reason": "Baseline corridor assumed available in this illustrative network; actual passability is unverified."
+        },
+        {
+          "edge_id": "north-c",
+          "metric": "discharge_m3_s",
+          "value": 106.0,
+          "threshold": 100.0,
+          "status": "scenario_unavailable",
+          "reason": "Daily discharge_m3_s 106 meets the assumed threshold 100. Assumed flow-sensitive corridor threshold"
+        }
+      ],
+      "communities": [
+        {
+          "node_id": "area-a",
+          "name": "Planning area A",
+          "status": "isolated",
+          "first_loss_date": "2021-11-16",
+          "days_until_loss": 0,
+          "action": "access_lost_in_scenario",
+          "reason": "No route to the selected base remains in the illustrative scenario, even allowing unknown edges. This is not a verified closure or complete-network isolation.",
+          "affected_edge_ids": [
+            "north-a",
+            "south-a"
+          ]
+        },
+        {
+          "node_id": "area-b",
+          "name": "Planning area B",
+          "status": "reachable",
+          "first_loss_date": null,
+          "days_until_loss": null,
+          "action": "monitor",
+          "reason": "A route to the selected base remains in all available daily scenario samples over the next two calendar days. Actual passability, conditions between samples and reopening are unverified.",
+          "affected_edge_ids": []
+        },
+        {
+          "node_id": "area-c",
+          "name": "Planning area C",
+          "status": "reachable",
+          "first_loss_date": null,
+          "days_until_loss": null,
+          "action": "monitor",
+          "reason": "A route to the selected base remains in all available daily scenario samples over the next two calendar days. Actual passability, conditions between samples and reopening are unverified.",
+          "affected_edge_ids": []
+        }
+      ]
+    },
+    {
+      "date": "2021-11-17",
+      "observation": {
+        "date": "2021-11-17",
+        "stage_m": 1.8140000104904173,
+        "discharge_m3_s": 51.900001525878906,
+        "stage_quality": null,
+        "discharge_quality": null,
+        "available_at": null
+      },
+      "outlook": [
+        {
+          "date": "2021-11-18",
+          "stage_m": 1.5160000324249268,
+          "discharge_m3_s": 31.700000762939453,
+          "stage_quality": null,
+          "discharge_quality": null,
+          "available_at": null
+        },
+        {
+          "date": "2021-11-19",
+          "stage_m": 1.3919999599456787,
+          "discharge_m3_s": 23.600000381469727,
+          "stage_quality": null,
+          "discharge_quality": null,
+          "available_at": null
+        }
+      ],
+      "edge_states": [
+        {
+          "edge_id": "base-north",
+          "metric": null,
+          "value": null,
+          "threshold": null,
+          "status": "modeled_available",
+          "reason": "Baseline corridor assumed available in this illustrative network; actual passability is unverified."
+        },
+        {
+          "edge_id": "base-south",
+          "metric": "stage_m",
+          "value": 1.8140000104904173,
+          "threshold": 2.2,
+          "status": "modeled_available",
+          "reason": "Daily stage_m 1.814 is below the assumed threshold 2.2; actual passability and reopening are unverified. Assumed concern threshold for a low approach"
+        },
+        {
+          "edge_id": "north-a",
+          "metric": "stage_m",
+          "value": 1.8140000104904173,
+          "threshold": 1.6,
+          "status": "scenario_unavailable",
+          "reason": "Daily stage_m 1.814 meets the assumed threshold 1.6. Assumed low-road concern threshold"
+        },
+        {
+          "edge_id": "south-a",
+          "metric": "stage_m",
+          "value": 1.8140000104904173,
+          "threshold": 1.65,
+          "status": "scenario_unavailable",
+          "reason": "Daily stage_m 1.814 meets the assumed threshold 1.65. Assumed alternative low-road concern threshold"
+        },
+        {
+          "edge_id": "north-b",
+          "metric": "stage_m",
+          "value": 1.8140000104904173,
+          "threshold": 2.8,
+          "status": "modeled_available",
+          "reason": "Daily stage_m 1.814 is below the assumed threshold 2.8; actual passability and reopening are unverified. Assumed crossing-approach concern threshold"
+        },
+        {
+          "edge_id": "south-b",
+          "metric": "discharge_m3_s",
+          "value": 51.900001525878906,
+          "threshold": 200.0,
+          "status": "modeled_available",
+          "reason": "Daily discharge_m3_s 51.9 is below the assumed threshold 200; actual passability and reopening are unverified. Assumed high-flow concern threshold; not a structural failure model"
+        },
+        {
+          "edge_id": "base-c",
+          "metric": null,
+          "value": null,
+          "threshold": null,
+          "status": "modeled_available",
+          "reason": "Baseline corridor assumed available in this illustrative network; actual passability is unverified."
+        },
+        {
+          "edge_id": "north-c",
+          "metric": "discharge_m3_s",
+          "value": 51.900001525878906,
+          "threshold": 100.0,
+          "status": "modeled_available",
+          "reason": "Daily discharge_m3_s 51.9 is below the assumed threshold 100; actual passability and reopening are unverified. Assumed flow-sensitive corridor threshold"
+        }
+      ],
+      "communities": [
+        {
+          "node_id": "area-a",
+          "name": "Planning area A",
+          "status": "isolated",
+          "first_loss_date": "2021-11-17",
+          "days_until_loss": 0,
+          "action": "access_lost_in_scenario",
+          "reason": "No route to the selected base remains in the illustrative scenario, even allowing unknown edges. This is not a verified closure or complete-network isolation.",
+          "affected_edge_ids": [
+            "north-a",
+            "south-a"
+          ]
+        },
+        {
+          "node_id": "area-b",
+          "name": "Planning area B",
+          "status": "reachable",
+          "first_loss_date": null,
+          "days_until_loss": null,
+          "action": "monitor",
+          "reason": "A route to the selected base remains in all available daily scenario samples over the next two calendar days. Actual passability, conditions between samples and reopening are unverified.",
+          "affected_edge_ids": []
+        },
+        {
+          "node_id": "area-c",
+          "name": "Planning area C",
+          "status": "reachable",
+          "first_loss_date": null,
+          "days_until_loss": null,
+          "action": "monitor",
+          "reason": "A route to the selected base remains in all available daily scenario samples over the next two calendar days. Actual passability, conditions between samples and reopening are unverified.",
+          "affected_edge_ids": []
+        }
+      ]
+    },
+    {
+      "date": "2021-11-18",
+      "observation": {
+        "date": "2021-11-18",
+        "stage_m": 1.5160000324249268,
+        "discharge_m3_s": 31.700000762939453,
+        "stage_quality": null,
+        "discharge_quality": null,
+        "available_at": null
+      },
+      "outlook": [
+        {
+          "date": "2021-11-19",
+          "stage_m": 1.3919999599456787,
+          "discharge_m3_s": 23.600000381469727,
+          "stage_quality": null,
+          "discharge_quality": null,
+          "available_at": null
+        }
+      ],
+      "edge_states": [
+        {
+          "edge_id": "base-north",
+          "metric": null,
+          "value": null,
+          "threshold": null,
+          "status": "modeled_available",
+          "reason": "Baseline corridor assumed available in this illustrative network; actual passability is unverified."
+        },
+        {
+          "edge_id": "base-south",
+          "metric": "stage_m",
+          "value": 1.5160000324249268,
+          "threshold": 2.2,
+          "status": "modeled_available",
+          "reason": "Daily stage_m 1.516 is below the assumed threshold 2.2; actual passability and reopening are unverified. Assumed concern threshold for a low approach"
+        },
+        {
+          "edge_id": "north-a",
+          "metric": "stage_m",
+          "value": 1.5160000324249268,
+          "threshold": 1.6,
+          "status": "modeled_available",
+          "reason": "Daily stage_m 1.516 is below the assumed threshold 1.6; actual passability and reopening are unverified. Assumed low-road concern threshold"
+        },
+        {
+          "edge_id": "south-a",
+          "metric": "stage_m",
+          "value": 1.5160000324249268,
+          "threshold": 1.65,
+          "status": "modeled_available",
+          "reason": "Daily stage_m 1.516 is below the assumed threshold 1.65; actual passability and reopening are unverified. Assumed alternative low-road concern threshold"
+        },
+        {
+          "edge_id": "north-b",
+          "metric": "stage_m",
+          "value": 1.5160000324249268,
+          "threshold": 2.8,
+          "status": "modeled_available",
+          "reason": "Daily stage_m 1.516 is below the assumed threshold 2.8; actual passability and reopening are unverified. Assumed crossing-approach concern threshold"
+        },
+        {
+          "edge_id": "south-b",
+          "metric": "discharge_m3_s",
+          "value": 31.700000762939453,
+          "threshold": 200.0,
+          "status": "modeled_available",
+          "reason": "Daily discharge_m3_s 31.7 is below the assumed threshold 200; actual passability and reopening are unverified. Assumed high-flow concern threshold; not a structural failure model"
+        },
+        {
+          "edge_id": "base-c",
+          "metric": null,
+          "value": null,
+          "threshold": null,
+          "status": "modeled_available",
+          "reason": "Baseline corridor assumed available in this illustrative network; actual passability is unverified."
+        },
+        {
+          "edge_id": "north-c",
+          "metric": "discharge_m3_s",
+          "value": 31.700000762939453,
+          "threshold": 100.0,
+          "status": "modeled_available",
+          "reason": "Daily discharge_m3_s 31.7 is below the assumed threshold 100; actual passability and reopening are unverified. Assumed flow-sensitive corridor threshold"
+        }
+      ],
+      "communities": [
+        {
+          "node_id": "area-a",
+          "name": "Planning area A",
+          "status": "reachable",
+          "first_loss_date": null,
+          "days_until_loss": null,
+          "action": "verify_access",
+          "reason": "A modeled route exists today, but missing dates or metrics leave part of the next two calendar days unknown. Verify access; no loss-free outlook is established.",
+          "affected_edge_ids": []
+        },
+        {
+          "node_id": "area-b",
+          "name": "Planning area B",
+          "status": "reachable",
+          "first_loss_date": null,
+          "days_until_loss": null,
+          "action": "verify_access",
+          "reason": "A modeled route exists today, but missing dates or metrics leave part of the next two calendar days unknown. Verify access; no loss-free outlook is established.",
+          "affected_edge_ids": []
+        },
+        {
+          "node_id": "area-c",
+          "name": "Planning area C",
+          "status": "reachable",
+          "first_loss_date": null,
+          "days_until_loss": null,
+          "action": "verify_access",
+          "reason": "A modeled route exists today, but missing dates or metrics leave part of the next two calendar days unknown. Verify access; no loss-free outlook is established.",
+          "affected_edge_ids": []
+        }
+      ]
+    },
+    {
+      "date": "2021-11-19",
+      "observation": {
+        "date": "2021-11-19",
+        "stage_m": 1.3919999599456787,
+        "discharge_m3_s": 23.600000381469727,
+        "stage_quality": null,
+        "discharge_quality": null,
+        "available_at": null
+      },
+      "outlook": [],
+      "edge_states": [
+        {
+          "edge_id": "base-north",
+          "metric": null,
+          "value": null,
+          "threshold": null,
+          "status": "modeled_available",
+          "reason": "Baseline corridor assumed available in this illustrative network; actual passability is unverified."
+        },
+        {
+          "edge_id": "base-south",
+          "metric": "stage_m",
+          "value": 1.3919999599456787,
+          "threshold": 2.2,
+          "status": "modeled_available",
+          "reason": "Daily stage_m 1.392 is below the assumed threshold 2.2; actual passability and reopening are unverified. Assumed concern threshold for a low approach"
+        },
+        {
+          "edge_id": "north-a",
+          "metric": "stage_m",
+          "value": 1.3919999599456787,
+          "threshold": 1.6,
+          "status": "modeled_available",
+          "reason": "Daily stage_m 1.392 is below the assumed threshold 1.6; actual passability and reopening are unverified. Assumed low-road concern threshold"
+        },
+        {
+          "edge_id": "south-a",
+          "metric": "stage_m",
+          "value": 1.3919999599456787,
+          "threshold": 1.65,
+          "status": "modeled_available",
+          "reason": "Daily stage_m 1.392 is below the assumed threshold 1.65; actual passability and reopening are unverified. Assumed alternative low-road concern threshold"
+        },
+        {
+          "edge_id": "north-b",
+          "metric": "stage_m",
+          "value": 1.3919999599456787,
+          "threshold": 2.8,
+          "status": "modeled_available",
+          "reason": "Daily stage_m 1.392 is below the assumed threshold 2.8; actual passability and reopening are unverified. Assumed crossing-approach concern threshold"
+        },
+        {
+          "edge_id": "south-b",
+          "metric": "discharge_m3_s",
+          "value": 23.600000381469727,
+          "threshold": 200.0,
+          "status": "modeled_available",
+          "reason": "Daily discharge_m3_s 23.6 is below the assumed threshold 200; actual passability and reopening are unverified. Assumed high-flow concern threshold; not a structural failure model"
+        },
+        {
+          "edge_id": "base-c",
+          "metric": null,
+          "value": null,
+          "threshold": null,
+          "status": "modeled_available",
+          "reason": "Baseline corridor assumed available in this illustrative network; actual passability is unverified."
+        },
+        {
+          "edge_id": "north-c",
+          "metric": "discharge_m3_s",
+          "value": 23.600000381469727,
+          "threshold": 100.0,
+          "status": "modeled_available",
+          "reason": "Daily discharge_m3_s 23.6 is below the assumed threshold 100; actual passability and reopening are unverified. Assumed flow-sensitive corridor threshold"
+        }
+      ],
+      "communities": [
+        {
+          "node_id": "area-a",
+          "name": "Planning area A",
+          "status": "reachable",
+          "first_loss_date": null,
+          "days_until_loss": null,
+          "action": "verify_access",
+          "reason": "A modeled route exists today, but missing dates or metrics leave part of the next two calendar days unknown. Verify access; no loss-free outlook is established.",
+          "affected_edge_ids": []
+        },
+        {
+          "node_id": "area-b",
+          "name": "Planning area B",
+          "status": "reachable",
+          "first_loss_date": null,
+          "days_until_loss": null,
+          "action": "verify_access",
+          "reason": "A modeled route exists today, but missing dates or metrics leave part of the next two calendar days unknown. Verify access; no loss-free outlook is established.",
+          "affected_edge_ids": []
+        },
+        {
+          "node_id": "area-c",
+          "name": "Planning area C",
+          "status": "reachable",
+          "first_loss_date": null,
+          "days_until_loss": null,
+          "action": "verify_access",
+          "reason": "A modeled route exists today, but missing dates or metrics leave part of the next two calendar days unknown. Verify access; no loss-free outlook is established.",
+          "affected_edge_ids": []
+        }
+      ]
+    }
+  ]
+}
