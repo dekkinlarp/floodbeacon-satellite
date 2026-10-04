@@ -157,3 +157,23 @@ def get_imagery(case_id: str, run_id: str | None = None) -> dict | None:
             "generated_at": run["generated_at"],
             "observations": [row["data"] for row in rows],
         }
+
+
+def get_access_replay(case_id: str, run_id: str | None = None) -> dict | None:
+    """Read a prepared decision replay, independent of other publication kinds."""
+    with connect() as conn:
+        query = (
+            "SELECT id,case_id,generated_at,metadata FROM runs WHERE case_id=%s "
+            "AND metadata->>'kind'='access_replay'"
+        )
+        params = (case_id,)
+        if run_id is None:
+            query += " ORDER BY generated_at DESC,id DESC LIMIT 1"
+        else:
+            query += " AND id=%s"
+            params = (case_id, run_id)
+        run = _run(conn.execute(query, params).fetchone())
+        if run is None:
+            return None
+        return {**run["metadata"]["access_replay"], "run_id": run["id"],
+                "generated_at": run["generated_at"]}

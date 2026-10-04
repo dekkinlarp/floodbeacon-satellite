@@ -99,3 +99,17 @@ def test_latest_imagery_ignores_newer_analysis_and_pins_observations(case):
     assert db.get_imagery(case["id"], "imagery-old")["observations"] == [{"id": "old-observation"}]
     assert db.get_imagery(case["id"], "analysis-latest") is None
     assert db.get_imagery(case["id"], "missing") is None
+
+
+def test_access_replay_ignores_other_publications_and_is_immutable(case):
+    layers = {"access_network": {"type": "FeatureCollection", "features": []}}
+    record = make_run(case, "access-v1", "2026-10-01T00:00:00Z")
+    record["metadata"] = {"kind": "access_replay", "access_replay": {
+        "mode": "historical_replay", "frames": [{"date": "2021-11-15"}]}}
+    db.publish_run(case, record, layers, [])
+    db.publish_run(case, make_run(case, "analysis-newer", "2026-10-02T00:00:00Z"), layers, [])
+    selected = db.get_access_replay(case["id"])
+    assert selected["run_id"] == "access-v1"
+    assert selected["frames"] == [{"date": "2021-11-15"}]
+    assert db.get_access_replay(case["id"], "analysis-newer") is None
+    assert db.get_access_replay(case["id"], "missing") is None

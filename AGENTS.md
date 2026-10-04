@@ -63,6 +63,20 @@ Preparation is separate from serving, and `floodbeacon publish-imagery` publishe
 immutable complete cases. See [integration](docs/imagery-integration.md) and
 [preprocessing](docs/bridge-imagery-preprocessing.md).
 
+The user authorized the second feature as historical access replay, with a
+future forecast adapter rather than new predictive training for the demo.
+The separate dashboard Response tab uses real ECCC Coldwater daily stage and
+discharge (November 11–19, 2021) with explicitly illustrative planning areas,
+network links and concern thresholds. Its two-day outlook uses later historical
+observations as hindsight; it is not a forecast available during the event.
+Preparation exports a small package JSON and publication creates an immutable
+`bc-2021-access-demo` run in the hosted database. GET only reads prepared data.
+The frontend commits the same export for an API-independent SVG diagram.
+See [access replay and planned data](docs/access-replay.md). Do not present this
+schematic graph as actual road geometry or its access losses as historical
+closures. No bridge collapse, local road depth or calibrated risk is modeled.
+Frontend changes require a PR based on freshly fetched `main`.
+
 All current work uses the hosted development database configured through the
 ignored `.env`. `DATABASE_URL` is required; there is no local database fallback.
 The local Compose PostgreSQL container is stopped. Real database tests create
